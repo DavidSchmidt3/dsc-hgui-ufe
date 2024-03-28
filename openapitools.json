@@ -1,0 +1,19 @@
+{
+  "$schema": "./node_modules/@openapitools/openapi-generator-cli/config.schema.json",
+  "generator-cli": {
+    "useDocker": true,
+    "version": "6.6.0",
+    "generators": {
+      "dsc-hgui": {
+        "generatorName": "typescript-axios",
+        "glob": "api/dsc-hgui.openapi.yaml",
+        "output": "#{cwd}/src/api/dsc-hgui",
+        "additionalProperties": {
+          "supportsES6": "true",
+          "withInterfaces": true,
+          "enablePostProcessFile": true
+        }
+      }
+    }
+  }
+}
