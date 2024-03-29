@@ -10,7 +10,7 @@ export class DscHguiApp {
   render() {
     return (
       <Host>
-        <div>Ahoj</div>
+        <h1>Dávid Schmidt - Hospital guidance for patients</h1>
       </Host>
     );
   }
