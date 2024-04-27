@@ -20,7 +20,7 @@
   ],
   "scripts": {
     "build": "stencil build",
-    "convert-openapi": "js-yaml  ./api/dsc-hgui.openapi.yaml > .openapi.json",
+    "convert-openapi": "js-yaml  ./api/dsc-hgui-webapi.openapi.yaml > .openapi.json",
     "mock-api": "open-api-mocker --schema .openapi.json --port 5005",
     "start:app": "stencil build --dev --watch --serve",
     "start:mock": "run-s convert-openapi mock-api",
