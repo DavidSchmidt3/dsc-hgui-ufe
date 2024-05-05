@@ -1,4 +1,6 @@
 import { Component, Event, EventEmitter, Host, Prop, State, h } from '@stencil/core';
+import { GuidanceEntry, HospitalGuidanceListApiFactory } from '../../api/dsc-hgui-webapi';
+import { uuidv4 } from '../../utils/utils';
 
 @Component({
   tag: 'dsc-hgui-editor',
@@ -8,13 +10,14 @@ import { Component, Event, EventEmitter, Host, Prop, State, h } from '@stencil/c
 export class DscHguiEditor {
   @Prop() entryId: string;
   @Prop() patientId: string;
+  @Prop() ambulanceId: string;
   @Prop() apiBase: string;
 
   @Event({ eventName: "editor-closed" }) editorClosed: EventEmitter<string>;
 
   @State() errorMessage: string;
   @State() isValid: boolean;
-  @State() entry: any;
+  @State() entry: GuidanceEntry;
 
   private formElement: HTMLFormElement;
 
@@ -37,16 +40,16 @@ export class DscHguiEditor {
     try {
       this.entry.createdAt = new Date().toISOString();
 
-      // const api = AmbulanceWaitingListApiFactory(undefined, this.apiBase);
-      // const response
-      //   = this.entryId === "@new"
-      //     ? await api.createWaitingListEntry(this.ambulanceId, this.entry)
-      //     : await api.updateWaitingListEntry(this.ambulanceId, this.entryId, this.entry);
-      // if (response.status < 299) {
-      //   this.editorClosed.emit("store")
-      // } else {
-      //   this.errorMessage = `Cannot store entry: ${response.statusText}`
-      // }
+      const api = HospitalGuidanceListApiFactory(undefined, this.apiBase);
+      const response
+        = this.entryId === "new"
+          ? await api.createHospitalGuidance(this.ambulanceId, uuidv4(), this.entry)
+          : await api.updateHospitalGuidance(this.ambulanceId, this.entry.id, this.entry);
+      if (response.status < 299) {
+        this.editorClosed.emit("store")
+      } else {
+        this.errorMessage = `Cannot store entry: ${response.statusText}`
+      }
     } catch (err: any) {
       this.errorMessage = `Cannot store entry: ${err.message || "unknown"}`
     }
@@ -58,6 +61,8 @@ export class DscHguiEditor {
         id: "new",
         patientName: "",
         title: "",
+        ambulanceId: "",
+        createdAt: "",
         description: "",
         severity: "low",
         phoneNumber: "",
@@ -70,14 +75,14 @@ export class DscHguiEditor {
       return undefined
     }
     try {
-      // const response = await AmbulanceOrderListApiFactory(undefined, this.apiBase)
-      //   .getOrderListEntry(this.ambulanceId, this.entryId)
+      const response = await HospitalGuidanceListApiFactory(undefined, this.apiBase)
+        .getHospitalGuidance(this.ambulanceId, this.entryId)
 
-      // if (response.status < 299) {
-      //   this.entry = response.data;
-      // } else {
-      //   this.errorMessage = `Cannot retrieve the order: ${response.statusText}`
-      // }
+      if (response.status < 299) {
+        this.entry = response.data;
+      } else {
+        this.errorMessage = `Cannot retrieve the order: ${response.statusText}`
+      }
     } catch (err: any) {
       this.errorMessage = `Chyba pri ziskavani zaznamu: ${err.message ?? ""}`
     }
@@ -138,7 +143,7 @@ export class DscHguiEditor {
             maxlength="13"
             value={this.entry?.phoneNumber}
             oninput={(ev: InputEvent) => {
-              if (this.entry) { this.entry.name = this.handleInputEvent(ev) }
+              if (this.entry) { this.entry.phoneNumber = this.handleInputEvent(ev) }
             }}>
           </md-filled-text-field>
 
@@ -147,7 +152,7 @@ export class DscHguiEditor {
             label="Email"
             value={this.entry?.email}
             oninput={(ev: InputEvent) => {
-              if (this.entry) { this.entry.name = this.handleInputEvent(ev) }
+              if (this.entry) { this.entry.email = this.handleInputEvent(ev) }
             }}>
           </md-filled-text-field>
 
@@ -157,7 +162,7 @@ export class DscHguiEditor {
             disabled={this.entryId === "new"}
             required value={this.entry?.response}
             oninput={(ev: InputEvent) => {
-              if (this.entry) { this.entry.orderId = this.handleInputEvent(ev) }
+              if (this.entry) { this.entry.response = this.handleInputEvent(ev) }
             }}>
           </md-filled-text-field>
         </form>

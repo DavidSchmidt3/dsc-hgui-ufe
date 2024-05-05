@@ -42,18 +42,24 @@ export class DscHguiApp {
       entryId = this.relativePath.split("/")[1]
     }
 
+    if (this.relativePath.startsWith("list")) {
+      element = "list";
+    }
+
     const navigate = (path: string) => {
       const absolute = new URL(path, new URL(this.basePath, document.baseURI)).pathname;
       window.navigation.navigate(absolute)
     }
 
-    function getComponent() {
+    const getComponent = () => {
       switch (element) {
         case "menu":
           return <dsc-hgui-menu onitem-click={(ev: CustomEvent<string>) => navigate(ev.detail)}></dsc-hgui-menu>
         case "editor":
-          return <dsc-hgui-editor onEditor-closed={() => navigate('./menu')} entryId={entryId}></dsc-hgui-editor>
-        default:
+          return <dsc-hgui-editor ambulance-id={this.ambulanceId} onEditor-closed={() => navigate('./menu')} entryId={entryId} apiBase={this.apiBase}></dsc-hgui-editor>
+        case "list":
+          return <dsc-hgui-list onReturn={() => navigate('./menu')} onEdit={(ev: CustomEvent<String>) => navigate('./entry/' + ev.detail)} ambulance-id={this.ambulanceId} apiBase={this.apiBase}></dsc-hgui-list>
+          default:
           return <div>Unknown element: {element}</div>
       }
     }

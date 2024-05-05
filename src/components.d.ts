@@ -12,9 +12,14 @@ export namespace Components {
         "basePath": string;
     }
     interface DscHguiEditor {
+        "ambulanceId": string;
         "apiBase": string;
         "entryId": string;
         "patientId": string;
+    }
+    interface DscHguiList {
+        "ambulanceId": string;
+        "apiBase": string;
     }
     interface DscHguiMenu {
     }
@@ -22,6 +27,10 @@ export namespace Components {
 export interface DscHguiEditorCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLDscHguiEditorElement;
+}
+export interface DscHguiListCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLDscHguiListElement;
 }
 export interface DscHguiMenuCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -51,6 +60,24 @@ declare global {
         prototype: HTMLDscHguiEditorElement;
         new (): HTMLDscHguiEditorElement;
     };
+    interface HTMLDscHguiListElementEventMap {
+        "return": string;
+        "edit": string;
+    }
+    interface HTMLDscHguiListElement extends Components.DscHguiList, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLDscHguiListElementEventMap>(type: K, listener: (this: HTMLDscHguiListElement, ev: DscHguiListCustomEvent<HTMLDscHguiListElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLDscHguiListElementEventMap>(type: K, listener: (this: HTMLDscHguiListElement, ev: DscHguiListCustomEvent<HTMLDscHguiListElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLDscHguiListElement: {
+        prototype: HTMLDscHguiListElement;
+        new (): HTMLDscHguiListElement;
+    };
     interface HTMLDscHguiMenuElementEventMap {
         "item-click": string;
     }
@@ -71,6 +98,7 @@ declare global {
     interface HTMLElementTagNameMap {
         "dsc-hgui-app": HTMLDscHguiAppElement;
         "dsc-hgui-editor": HTMLDscHguiEditorElement;
+        "dsc-hgui-list": HTMLDscHguiListElement;
         "dsc-hgui-menu": HTMLDscHguiMenuElement;
     }
 }
@@ -81,10 +109,17 @@ declare namespace LocalJSX {
         "basePath"?: string;
     }
     interface DscHguiEditor {
+        "ambulanceId"?: string;
         "apiBase"?: string;
         "entryId"?: string;
         "onEditor-closed"?: (event: DscHguiEditorCustomEvent<string>) => void;
         "patientId"?: string;
+    }
+    interface DscHguiList {
+        "ambulanceId"?: string;
+        "apiBase"?: string;
+        "onEdit"?: (event: DscHguiListCustomEvent<string>) => void;
+        "onReturn"?: (event: DscHguiListCustomEvent<string>) => void;
     }
     interface DscHguiMenu {
         "onItem-click"?: (event: DscHguiMenuCustomEvent<string>) => void;
@@ -92,6 +127,7 @@ declare namespace LocalJSX {
     interface IntrinsicElements {
         "dsc-hgui-app": DscHguiApp;
         "dsc-hgui-editor": DscHguiEditor;
+        "dsc-hgui-list": DscHguiList;
         "dsc-hgui-menu": DscHguiMenu;
     }
 }
@@ -101,6 +137,7 @@ declare module "@stencil/core" {
         interface IntrinsicElements {
             "dsc-hgui-app": LocalJSX.DscHguiApp & JSXBase.HTMLAttributes<HTMLDscHguiAppElement>;
             "dsc-hgui-editor": LocalJSX.DscHguiEditor & JSXBase.HTMLAttributes<HTMLDscHguiEditorElement>;
+            "dsc-hgui-list": LocalJSX.DscHguiList & JSXBase.HTMLAttributes<HTMLDscHguiListElement>;
             "dsc-hgui-menu": LocalJSX.DscHguiMenu & JSXBase.HTMLAttributes<HTMLDscHguiMenuElement>;
         }
     }
