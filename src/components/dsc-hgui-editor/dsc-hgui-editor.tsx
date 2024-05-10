@@ -58,10 +58,10 @@ export class DscHguiEditor {
   private async getGuidanceEntry(): Promise<any> {
     if (this.entryId === "new") {
       this.entry = {
-        id: "new",
+        id: uuidv4(),
         patientName: "",
         title: "",
-        ambulanceId: "",
+        ambulanceId: this.ambulanceId,
         createdAt: "",
         description: "",
         severity: "low",
