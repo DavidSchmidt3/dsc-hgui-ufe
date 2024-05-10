@@ -10,6 +10,7 @@ import { uuidv4 } from '../../utils/utils';
 export class DscHguiEditor {
   @Prop() entryId: string;
   @Prop() patientId: string;
+  @Prop() isPatient: boolean;
   @Prop() ambulanceId: string;
   @Prop() apiBase: string;
 
@@ -111,6 +112,7 @@ export class DscHguiEditor {
             maxlength="255"
             type="text"
             label="Meno pacienta"
+            disabled={!this.isPatient}
             required value={this.entry?.patientName}
             oninput={(ev: InputEvent) => {
               if (this.entry) { this.entry.patientName = this.handleInputEvent(ev) }
@@ -119,6 +121,7 @@ export class DscHguiEditor {
 
           <md-filled-text-field type="text" label="Názov problému" maxlength="255"
             required value={this.entry?.title}
+            disabled={!this.isPatient}
             oninput={(ev: InputEvent) => {
               if (this.entry) { this.entry.title = this.handleInputEvent(ev) }
             }}>
@@ -126,12 +129,13 @@ export class DscHguiEditor {
 
           <md-filled-text-field type="textarea" label="Popis problému"
             required value={this.entry?.description}
+            disabled={!this.isPatient}
             oninput={(ev: InputEvent) => {
               if (this.entry) { this.entry.description = this.handleInputEvent(ev) }
             }}>
           </md-filled-text-field>
 
-          <md-filled-select label="Závažnosť problému" value={this.entry?.severity}  required>
+          <md-filled-select label="Závažnosť problému" value={this.entry?.severity} disabled={!this.isPatient} required>
             <md-select-option value="low">Nízka</md-select-option>
             <md-select-option value="medium">Stredná</md-select-option>
             <md-select-option value="high">Vysoká</md-select-option>
@@ -141,6 +145,7 @@ export class DscHguiEditor {
             type="text"
             label="Telefónne číslo"
             maxlength="13"
+            disabled={!this.isPatient}
             value={this.entry?.phoneNumber}
             oninput={(ev: InputEvent) => {
               if (this.entry) { this.entry.phoneNumber = this.handleInputEvent(ev) }
@@ -151,6 +156,7 @@ export class DscHguiEditor {
             type="text"
             label="Email"
             value={this.entry?.email}
+            disabled={!this.isPatient}
             oninput={(ev: InputEvent) => {
               if (this.entry) { this.entry.email = this.handleInputEvent(ev) }
             }}>
@@ -159,7 +165,7 @@ export class DscHguiEditor {
           <md-filled-text-field
             type="textarea"
             label="Odpoveď od lekára"
-            disabled={this.entryId === "new"}
+            disabled={this.entryId === "new" || this.isPatient}
             required value={this.entry?.response}
             oninput={(ev: InputEvent) => {
               if (this.entry) { this.entry.response = this.handleInputEvent(ev) }

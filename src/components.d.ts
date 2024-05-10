@@ -15,6 +15,7 @@ export namespace Components {
         "ambulanceId": string;
         "apiBase": string;
         "entryId": string;
+        "isPatient": boolean;
         "patientId": string;
     }
     interface DscHguiList {
@@ -112,6 +113,7 @@ declare namespace LocalJSX {
         "ambulanceId"?: string;
         "apiBase"?: string;
         "entryId"?: string;
+        "isPatient"?: boolean;
         "onEditor-closed"?: (event: DscHguiEditorCustomEvent<string>) => void;
         "patientId"?: string;
     }

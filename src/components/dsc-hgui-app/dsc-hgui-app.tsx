@@ -36,10 +36,12 @@ export class DscHguiApp {
   render() {
     let element = 'menu';
     let entryId = 'new';
+    let isPatient = false;
 
     if (this.relativePath.startsWith("entry/")) {
       element = "editor";
       entryId = this.relativePath.split("/")[1]
+      isPatient = this.relativePath.split("/")[2] === 'patientEdit' || this.relativePath.split("/")[2] === undefined;
     }
 
     if (this.relativePath.startsWith("list")) {
@@ -56,7 +58,7 @@ export class DscHguiApp {
         case "menu":
           return <dsc-hgui-menu onitem-click={(ev: CustomEvent<string>) => navigate(ev.detail)}></dsc-hgui-menu>
         case "editor":
-          return <dsc-hgui-editor ambulance-id={this.ambulanceId} onEditor-closed={() => navigate('./menu')} entryId={entryId} apiBase={this.apiBase}></dsc-hgui-editor>
+          return <dsc-hgui-editor ambulance-id={this.ambulanceId} onEditor-closed={() => navigate('./menu')} entryId={entryId} isPatient={isPatient} apiBase={this.apiBase}></dsc-hgui-editor>
         case "list":
           return <dsc-hgui-list onReturn={() => navigate('./menu')} onEdit={(ev: CustomEvent<String>) => navigate('./entry/' + ev.detail)} ambulance-id={this.ambulanceId} apiBase={this.apiBase}></dsc-hgui-list>
           default:

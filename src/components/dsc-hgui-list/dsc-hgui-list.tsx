@@ -72,8 +72,14 @@ export class DscHguiList {
                 <div slot="supporting-text">{this.formatDate(entry.createdAt)}</div>
                 <div slot="supporting-text">{entry.patientName}</div>
                 <md-outlined-button class="edit-button"
-                  slot="end" onClick={() => this.edit.emit(entry.id)}>
+                  slot="end" onClick={() => this.edit.emit(`${entry.id}/doctorEdit`)}>
                   <md-icon>Edit</md-icon>
+                  Edit ako doktor
+                </md-outlined-button>
+                <md-outlined-button class="edit-button"
+                  slot="end" onClick={() => this.edit.emit(`${entry.id}/patientEdit`)}>
+                  <md-icon>Edit</md-icon>
+                  Edit ako pacient
                 </md-outlined-button>
                 <md-outlined-button slot="end" onClick={() => this.deleteEntry(entry.id)}>Delete</md-outlined-button>
               </md-list-item>
