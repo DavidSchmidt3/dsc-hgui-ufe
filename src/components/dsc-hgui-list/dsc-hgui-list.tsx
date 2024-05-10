@@ -17,7 +17,7 @@ export class DscHguiList {
   @State() isValid: boolean;
   @State() entry: GuidanceEntry;
 
-  entries: GuidanceEntry[] = [];
+  @State() entries: GuidanceEntry[] = [];
 
   private async getGuidanceEntries(): Promise<GuidanceEntry[]> {
     try {
@@ -35,7 +35,7 @@ export class DscHguiList {
   }
 
   async componentWillLoad() {
-    this.entries = await this.getGuidanceEntries();
+    this.entries = await this.getGuidanceEntries() ?? [];
   }
 
   private async deleteEntry(id: string) {
@@ -43,7 +43,7 @@ export class DscHguiList {
       const api = HospitalGuidanceListApiFactory(undefined, this.apiBase);
       const response = await api.deleteHospitalGuidance(this.ambulanceId, id);
       if (response.status < 299) {
-        this.entries = await this.getGuidanceEntries();
+        this.entries = await this.getGuidanceEntries() ?? [];
       } else {
         this.errorMessage = `Cannot delete entry: ${response.statusText}`
       }
