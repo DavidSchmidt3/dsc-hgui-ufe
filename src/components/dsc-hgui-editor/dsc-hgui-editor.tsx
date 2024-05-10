@@ -24,6 +24,7 @@ export class DscHguiEditor {
 
   private handleInputEvent(ev: InputEvent): string {
     const target = ev.target as HTMLInputElement;
+
     return target.value
   }
 
